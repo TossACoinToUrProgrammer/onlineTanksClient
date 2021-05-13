@@ -1,0 +1,17 @@
+.canvas-wrapper {
+    position: relative;
+    margin: 60px auto 0;
+    height: 525px;
+    width: 525px;
+    overflow: hidden;
+}
+
+#canvas {
+    position: absolute;
+    z-index: 2;
+    border: 1px solid gray;
+}
+
+#staticCanvas {
+    background-size: 150px !important;
+}

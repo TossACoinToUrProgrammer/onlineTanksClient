@@ -1,0 +1,14 @@
+.room {
+    padding: 0 15px;
+    margin: 15px 0;
+    height: 30px;
+    line-height: 30px;
+    width: 100%;
+    border: 1px solid gray;
+
+    &:hover {
+        background-color: gray;
+        color: white;
+        cursor: pointer;
+    }
+}

@@ -1,0 +1,19 @@
+.title {
+    margin-bottom: 15px;
+}
+.form {
+    display: flex;
+    padding-bottom: 30px;
+    
+    &__input {
+        height: 30px;
+        outline: none;
+    }
+    &__input-name {
+        padding-left: 15px;
+        width: 100%;
+    }
+    &__input-btn {
+        padding: 0 15px;
+    }
+}

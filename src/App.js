@@ -1,25 +1,66 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react"
+import { observer } from "mobx-react-lite"
 
-function App() {
+import socketState from "./state/socketState"
+
+import "./styles/app.scss"
+
+import Canvas from "./components/Canvas"
+import HostMenu from "./components/HostMenu"
+import gameState from "./state/gameState"
+
+const App = observer(() => {
+  const [connection, setConnection] = useState(false)
+
+  useEffect(() => {
+    const socket = new WebSocket("ws://localhost:5000/")
+    socketState.setSocket(socket)
+
+    socket.onopen = () => {
+      setConnection(true)
+    }
+
+    socketState.socket.onmessage = (e) => {
+      const msg = JSON.parse(e.data)
+      switch (msg.method) {
+        case "create-room":
+          socketState.setRoom(msg.id)
+          break
+        case "rooms":
+          socketState.setRooms(msg.rooms)
+          break
+        case "enter-room":
+          gameState.controller.addPlayers(msg.payload)
+          break
+        case "event":
+          gameState.controller.eventHandler(msg)
+          break
+        case "update-score":
+          gameState.setScores(msg.playerId, msg.scoreChange)
+          break
+      }
+    }
+  }, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <>
+      <header>
+        <div className="container">
+          <h1>Tanks Online</h1>
+        </div>
       </header>
-    </div>
-  );
-}
+      <div className="App container">
+        {!connection ? (
+          "Connecting..."
+        ) : (
+          <>{socketState.roomId ? <Canvas /> : <HostMenu />}</>
+        )}
+      </div>
+      <footer>
 
-export default App;
+      </footer>
+    </>
+  )
+})
+
+export default App
