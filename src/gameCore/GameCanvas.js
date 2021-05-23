@@ -5,9 +5,8 @@ export default class GameCanvas {
   constructor(canvas, mapSchema, wallImg) {
     this.canvas = canvas
     this.ctx = canvas.getContext("2d")
-
     this.mapSchema = mapSchema
-    this.walls = [
+    this.borders = [
       {
         type: "horizontal",
         startX: 0,
@@ -36,36 +35,48 @@ export default class GameCanvas {
         startY: 0,
         endY: canvas.height,
       },
-      ...this.mapSchema.walls,
     ]
 
     this.wallImg = wallImg
     this.animationProvider = new GameAnimation(this.canvas)
+
+    this.initStaticCanvas()
   }
 
-  drawWalls() {
-    this.canvas.insertAdjacentHTML(
-      "afterend",
-      `<canvas 
-         id="staticCanvas" 
-         width="${this.canvas.width}" 
-         height="${this.canvas.height}" 
-         style="background: url('${this.mapSchema.bgImage}');">
-       </canvas>`
-    )
-    this.staticCtx = document.querySelector("#staticCanvas").getContext("2d")
+  initStaticCanvas() {
+    this.staticCanvas = document.createElement("canvas")
+    this.staticCanvas.id = "staticCanvas"
+    this.staticCanvas.width = this.canvas.width
+    this.staticCanvas.height = this.canvas.height
 
-    this.mapSchema.walls.forEach(this.drawWall.bind(this))
+    this.staticCtx = this.staticCanvas.getContext("2d")
+    this.canvas.insertAdjacentElement("afterend", this.staticCanvas)
   }
 
-  drawWall(wall) {
+  drawMap(mapSchema) {
+    this.staticCtx.clearRect(0, 0, this.staticCanvas.width, this.staticCanvas.height)
+
+    this.walls = [...this.borders, ...mapSchema.walls]
+
+    this.staticCanvas.style = `background: url('${mapSchema.bgImage}');`
+
+    const wallImage = new Image()
+    wallImage.src = mapSchema.wallImage
+    wallImage.onload = () => {
+      this.walls.forEach((wall) =>
+        this.drawWall.call(this, wall, wallImage)
+      )
+    }
+  }
+
+  drawWall(wall, wallImg) {
     if (wall.type === "horizontal") {
       for (let i = wall.startX; i < wall.endX; i += 35) {
-        this.staticCtx.drawImage(this.wallImg, i, wall.startY)
+        this.staticCtx.drawImage(wallImg, i, wall.startY, 35, 35)
       }
     } else if (wall.type === "vertical") {
       for (let i = wall.startY; i < wall.endY; i += 35) {
-        this.staticCtx.drawImage(this.wallImg, wall.startX, i)
+        this.staticCtx.drawImage(wallImg, wall.startX, i, 35, 35)
       }
     }
   }

@@ -2,8 +2,9 @@ import { makeAutoObservable } from "mobx"
 
 class GameState {
   id = null
-  gameController = null
+  controller = null
   players = []
+  mapSchema = null
 
   constructor() {
     makeAutoObservable(this)
@@ -19,6 +20,10 @@ class GameState {
 
   setPlayers(players) { 
     this.players = players
+  }
+
+  setMapSchema(schema) {
+    this.mapSchema = schema
   }
 
   setScores(playerId, scoreChange) {

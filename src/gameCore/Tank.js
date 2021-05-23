@@ -18,7 +18,7 @@ export default class Tank extends GameObject {
     this.keyUpHandler = this.keyUpHandler.bind(this)
     this.keyPressHandler = this.keyPressHandler.bind(this)
 
-    if(gameState.id === this.id) {
+    if (gameState.id === this.id) {
       this.listen()
     }
   }
@@ -64,7 +64,11 @@ export default class Tank extends GameObject {
           case "Enter":
             this.shoot()
             break
+          default:
+            break
         }
+        break
+      default:
         break
     }
   }
@@ -172,7 +176,7 @@ export default class Tank extends GameObject {
       id: Date.now(),
       moveStep: 6,
       moveInterval: 40,
-      tankId: this.id
+      tankId: this.id,
     })
 
     this.gameCanvas.addObject(bullet)
@@ -193,7 +197,8 @@ export default class Tank extends GameObject {
         method: "event",
         type: "keydown",
         code: e.code,
-        id: this.id
+        id: this.id,
+        roomId: socketState.roomId
       })
     )
   }
@@ -204,7 +209,8 @@ export default class Tank extends GameObject {
         method: "event",
         type: "keyup",
         code: e.code,
-        id: this.id
+        id: this.id,
+        roomId: socketState.roomId
       })
     )
   }
@@ -215,7 +221,8 @@ export default class Tank extends GameObject {
         method: "event",
         type: "keypress",
         code: e.code,
-        id: this.id
+        id: this.id,
+        roomId: socketState.roomId
       })
     )
   }

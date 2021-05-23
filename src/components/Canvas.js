@@ -14,8 +14,9 @@ const Canvas = observer(() => {
     gameState.setId(id)
 
     const gameController = new GameController(canvasRef.current)
-    gameController.start()
     gameState.setController(gameController)
+    gameController.start()
+    if(gameState.mapSchema) gameController.drawMap(gameState.mapSchema)
 
     socketState.socket.send(
       JSON.stringify({

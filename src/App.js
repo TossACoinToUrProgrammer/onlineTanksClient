@@ -24,13 +24,16 @@ const App = observer(() => {
       const msg = JSON.parse(e.data)
       switch (msg.method) {
         case "create-room":
+          gameState.setMapSchema(msg.schema)
           socketState.setRoom(msg.id)
           break
         case "rooms":
           socketState.setRooms(msg.rooms)
           break
         case "enter-room":
-          gameState.controller.addPlayers(msg.payload)
+          gameState.setMapSchema(msg.schema)
+          gameState.controller.drawMap(msg.schema)
+          gameState.controller.addPlayers(msg.players)
           break
         case "event":
           gameState.controller.eventHandler(msg)
@@ -40,6 +43,12 @@ const App = observer(() => {
           break
       }
     }
+
+    // document.addEventListener("visibilitychange", function() {
+    //   if(document.visibilityState === 'hidden' && socketState.roomId) {
+    //     socketState.exitRoom()
+    //   }
+    // })
   }, [])
 
   return (
@@ -56,9 +65,7 @@ const App = observer(() => {
           <>{socketState.roomId ? <Canvas /> : <HostMenu />}</>
         )}
       </div>
-      <footer>
-
-      </footer>
+      <footer></footer>
     </>
   )
 })

@@ -1,29 +1,40 @@
 import GameCanvas from "../gameCore/GameCanvas.js"
 import Tank from "../gameCore/Tank"
 import tank_img_src from "../assets/images/tank.png"
-import wall_img_src from "../assets/images/wall.jpg"
-import mapSchemas from "../gameCore/shemas.js"
+import tank2_img_src from "../assets/images/tealTank.png"
 import gameState from "../state/gameState.js"
 
 export default class GameController {
   constructor(canvas) {
     this.canvas = canvas
     this.gameCanvas = undefined
-    this.mapSchema = undefined
   }
 
   start() {
-    const wallImg = new Image()
-    wallImg.src = wall_img_src
+    this.tankImgs = [tank_img_src, tank2_img_src]
+    
+    this.tankImgs = this.tankImgs.map(url => {
+      const img = new Image()
+      img.src = url
+      return img
+    })
+    
+    this.tankImgs.forEach(img => {
+      img.onload = () => this.gameCanvas.draw()
+    })
+    
+    this.gameCanvas = new GameCanvas(this.canvas)
+  }
 
-    this.tankImg = new Image()
-    this.tankImg.src = tank_img_src
-    this.tankImg.onload = () => this.gameCanvas.draw()
+  restart(mapSchema) {
+    setTimeout(() => {
+      this.drawMap(mapSchema)
+      this.addPlayers(gameState.players)
+    }, 3000)
+  }
 
-    this.mapSchema = mapSchemas[Math.floor(Math.random() * mapSchemas.length)]
-    this.gameCanvas = new GameCanvas(this.canvas, this.mapSchema, wallImg)
-
-    wallImg.onload = () => this.gameCanvas.drawWalls()
+  drawMap(mapSchema) {
+    this.gameCanvas.drawMap(mapSchema)
   }
 
   addPlayers(players) {
@@ -33,11 +44,11 @@ export default class GameController {
       const tank = new Tank(
         this.gameCanvas,
         {
-          xPos: this.mapSchema[`playerPos_${index}`].x,
-          yPos: this.mapSchema[`playerPos_${index}`].y,
+          xPos: gameState.mapSchema[`playerPos_${index}`].x,
+          yPos: gameState.mapSchema[`playerPos_${index}`].y,
           id,
         },
-        this.tankImg
+        this.tankImgs[index]
       )
 
       this.gameCanvas.addObject(tank)
