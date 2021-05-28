@@ -25,6 +25,12 @@ class SocketState {
     this.roomId = null
   }
 
+  restart() {
+    this.socket.send(
+      JSON.stringify({ method: "restart", roomId: this.roomId })
+    )
+  }
+
   setRooms(rooms) {
     this.rooms = rooms
   }

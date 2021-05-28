@@ -41,6 +41,11 @@ const App = observer(() => {
         case "update-score":
           gameState.setScores(msg.playerId, msg.scoreChange)
           break
+        case "restart":
+          setTimeout(() => {
+            gameState.setMapSchema(msg.schema)
+            gameState.controller.restart()
+          }, 3000)
       }
     }
 

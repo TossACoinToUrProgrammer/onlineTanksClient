@@ -12,25 +12,23 @@ export default class GameController {
 
   start() {
     this.tankImgs = [tank_img_src, tank2_img_src]
-    
-    this.tankImgs = this.tankImgs.map(url => {
+
+    this.tankImgs = this.tankImgs.map((url) => {
       const img = new Image()
       img.src = url
       return img
     })
-    
-    this.tankImgs.forEach(img => {
+
+    this.tankImgs.forEach((img) => {
       img.onload = () => this.gameCanvas.draw()
     })
-    
+
     this.gameCanvas = new GameCanvas(this.canvas)
   }
 
-  restart(mapSchema) {
-    setTimeout(() => {
-      this.drawMap(mapSchema)
-      this.addPlayers(gameState.players)
-    }, 3000)
+  restart() {
+      this.drawMap(gameState.mapSchema)
+      this.addPlayers(gameState.players.map(player => player.id))
   }
 
   drawMap(mapSchema) {
@@ -57,7 +55,7 @@ export default class GameController {
 
     gameState.setPlayers(
       players.map((id) => {
-        return { id, score: 0 }
+        return { id, score: gameState.players.find(el => el.id === id)?.score || 0 }
       })
     )
   }

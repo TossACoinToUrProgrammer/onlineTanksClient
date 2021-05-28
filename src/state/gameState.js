@@ -1,4 +1,5 @@
 import { makeAutoObservable } from "mobx"
+import socketState from "./socketState"
 
 class GameState {
   id = null
@@ -28,6 +29,9 @@ class GameState {
 
   setScores(playerId, scoreChange) {
     this.players.find((player) => player.id === playerId).score += scoreChange
+    if(this.id === playerId && this.controller.gameCanvas.tanksCounter() === 1) {
+      socketState.restart()
+    }
   }
 }
 

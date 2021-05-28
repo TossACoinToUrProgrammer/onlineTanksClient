@@ -54,7 +54,12 @@ export default class GameCanvas {
   }
 
   drawMap(mapSchema) {
-    this.staticCtx.clearRect(0, 0, this.staticCanvas.width, this.staticCanvas.height)
+    this.staticCtx.clearRect(
+      0,
+      0,
+      this.staticCanvas.width,
+      this.staticCanvas.height
+    )
 
     this.walls = [...this.borders, ...mapSchema.walls]
 
@@ -63,9 +68,7 @@ export default class GameCanvas {
     const wallImage = new Image()
     wallImage.src = mapSchema.wallImage
     wallImage.onload = () => {
-      this.walls.forEach((wall) =>
-        this.drawWall.call(this, wall, wallImage)
-      )
+      this.walls.forEach((wall) => this.drawWall.call(this, wall, wallImage))
     }
   }
 
@@ -102,5 +105,13 @@ export default class GameCanvas {
   destroyObject(id) {
     delete this.objects[id]
     this.draw()
+  }
+
+  tanksCounter() {
+    let counter = 0
+    for (let key in this.objects) {
+      if (this.objects[key].type === "tank") counter++
+    }
+    return counter
   }
 }
