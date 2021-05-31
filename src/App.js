@@ -13,7 +13,8 @@ const App = observer(() => {
   const [connection, setConnection] = useState(false)
 
   useEffect(() => {
-    const socket = new WebSocket("ws://localhost:5000/")
+    // const socket = new WebSocket("ws://localhost:5000/")
+    const socket = new WebSocket("ws://sheltered-coast-90424.herokuapp.com/")
     socketState.setSocket(socket)
 
     socket.onopen = () => {
