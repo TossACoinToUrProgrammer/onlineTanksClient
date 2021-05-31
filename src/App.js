@@ -8,7 +8,7 @@ import "./styles/app.scss"
 import Canvas from "./components/Canvas"
 import HostMenu from "./components/HostMenu"
 import gameState from "./state/gameState"
-
+//ci = ''
 const App = observer(() => {
   const [connection, setConnection] = useState(false)
 
