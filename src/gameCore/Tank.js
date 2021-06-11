@@ -34,39 +34,31 @@ export default class Tank extends GameObject {
       case "keydown":
         switch (e.code) {
           case "KeyD":
-            this.angle += 10
-            if (this.angle >= 360) this.angle %= 360
-            this.gameCanvas.draw()
-            // if (!this.turnAsideIntervalID) this.turnAside("right")
+            if (!this.turnAsideIntervalID) this.turnAside("right")
             break
           case "KeyA":
-            this.angle += 350
-            if (this.angle >= 360) this.angle %= 360
-            this.gameCanvas.draw()
-            // if (!this.turnAsideIntervalID) this.turnAside("left")
+            if (!this.turnAsideIntervalID) this.turnAside("left")
             break
           case "KeyW":
             this.direction = "forward"
-            this.move()
-            // if (!this.moveIntervalID) this.startMoving(this.direction)
+            if (!this.moveIntervalID) this.startMoving(this.direction)
             break
           case "KeyS":
             this.direction = "backward"
-            this.move()
-            // if (!this.moveIntervalID) this.startMoving(this.direction)
+            if (!this.moveIntervalID) this.startMoving(this.direction)
             break
           default:
             break
         }
         break
-      // case "keyup":
-      //   if (e.code === "KeyW" || e.code === "KeyS") {
-      //     this.stopMoving()
-      //   }
-      //   if (e.code === "KeyA" || e.code === "KeyD") {
-      //     this.stopTurnAside()
-      //   }
-      //   break
+      case "keyup":
+        if (e.code === "KeyW" || e.code === "KeyS") {
+          this.stopMoving()
+        }
+        if (e.code === "KeyA" || e.code === "KeyD") {
+          this.stopTurnAside()
+        }
+        break
       case "keypress":
         switch (e.code) {
           case "Enter":
@@ -206,7 +198,7 @@ export default class Tank extends GameObject {
         type: "keydown",
         code: e.code,
         id: this.id,
-        roomId: socketState.roomId,
+        roomId: socketState.roomId
       })
     )
   }
@@ -218,7 +210,7 @@ export default class Tank extends GameObject {
         type: "keyup",
         code: e.code,
         id: this.id,
-        roomId: socketState.roomId,
+        roomId: socketState.roomId
       })
     )
   }
@@ -230,7 +222,7 @@ export default class Tank extends GameObject {
         type: "keypress",
         code: e.code,
         id: this.id,
-        roomId: socketState.roomId,
+        roomId: socketState.roomId
       })
     )
   }
