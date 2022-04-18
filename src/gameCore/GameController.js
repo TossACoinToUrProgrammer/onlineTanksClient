@@ -3,6 +3,7 @@ import Tank from "../gameCore/Tank"
 import tank_img_src from "../assets/images/tank.png"
 import tank2_img_src from "../assets/images/tealTank.png"
 import gameState from "../state/gameState.js"
+import { toJS } from "mobx"
 
 export default class GameController {
   constructor(canvas) {
@@ -42,8 +43,8 @@ export default class GameController {
       const tank = new Tank(
         this.gameCanvas,
         {
-          xPos: gameState.mapSchema[`playerPos_${index}`].x,
-          yPos: gameState.mapSchema[`playerPos_${index}`].y,
+          xPos: gameState.mapSchema.playerPositions[index].x,
+          yPos: gameState.mapSchema.playerPositions[index].y,
           id,
         },
         this.tankImgs[index]
