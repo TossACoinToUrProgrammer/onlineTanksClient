@@ -29,7 +29,7 @@ class GameState {
 
   setScores(playerId, scoreChange) {
     this.players.find((player) => player.id === playerId).score += scoreChange
-    if(this.id === playerId && this.controller.gameCanvas.tanksCounter() === 1) {
+    if(this.id === playerId && this.controller.gameCanvas.tanksCounter() <= 1) {
       socketState.restart()
     }
   }
